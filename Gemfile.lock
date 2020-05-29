@@ -2,12 +2,20 @@ PATH
   remote: .
   specs:
     semaph (0.1.0)
+      faraday
+      rainbow
+      shell_shock
 
 GEM
   remote: https://rubygems.org/
   specs:
+    faraday (1.0.1)
+      multipart-post (>= 1.2, < 3)
     minitest (5.14.1)
+    multipart-post (2.1.1)
+    rainbow (3.0.0)
     rake (12.3.3)
+    shell_shock (0.0.5)
 
 PLATFORMS
   ruby
