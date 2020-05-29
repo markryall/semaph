@@ -2,5 +2,8 @@ require "semaph/version"
 
 module Semaph
   class Error < StandardError; end
-  # Your code goes here...
+
+  def self.console
+    puts "welcome!"
+  end
 end
