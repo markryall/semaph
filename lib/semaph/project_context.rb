@@ -6,7 +6,7 @@ module Semaph
     include ShellShock::Context
 
     def initialize(api, project)
-      @prompt = "#{project[:name]} > "
+      @prompt = "🏗  #{api.host} #{project[:name]} > "
       @state = { workflows: [] }
       add_command WorkflowsList.new(api, project[:id], @state), "ls"
     end

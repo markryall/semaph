@@ -9,7 +9,7 @@ module Semaph
 
     def initialize(organisation)
       host = organisation["host"]
-      @prompt = "#{host} > "
+      @prompt = "🏗  #{host} > "
       @state = { projects: [] }
       api = Api.new(organisation["auth"]["token"], host)
       add_command ProjectsList.new(api, @state), "ls"

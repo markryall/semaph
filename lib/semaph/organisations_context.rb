@@ -8,7 +8,7 @@ module Semaph
 
     def initialize(organisations)
       @organisations = organisations
-      @prompt = "semaph > "
+      @prompt = "🏗  > "
       add_command OrganisationsList.new(organisations), "ls"
       add_command OrganisationsSelect.new(organisations), "cd"
     end
