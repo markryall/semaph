@@ -1,0 +1,19 @@
+version: v1.0
+name: "Main Build"
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+    
+auto_cancel:
+  queued:
+    when: true
+
+blocks:
+  - name: "Build"
+    task:
+      jobs:
+      - name: Build
+        commands:
+          - checkout
+          - echo "done"
