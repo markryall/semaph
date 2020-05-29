@@ -1,3 +1,5 @@
+require "semaph/organisation_context"
+
 module Semaph
   class OrganisationsSelect
     attr_reader :usage, :help
@@ -13,7 +15,7 @@ module Semaph
     end
 
     def execute(name)
-      puts "you chose #{name}"
+      OrganisationContext.new(@organisations[name]).push
     end
   end
 end

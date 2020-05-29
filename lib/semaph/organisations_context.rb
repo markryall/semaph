@@ -6,11 +6,11 @@ module Semaph
   class OrganisationsContext
     include ShellShock::Context
 
-    def initialize(credentials)
-      @credentials = credentials
+    def initialize(organisations)
+      @organisations = organisations
       @prompt = "semaph > "
-      add_command OrganisationsList.new(credentials), "ls"
-      add_command OrganisationsSelect.new(credentials), "cd"
+      add_command OrganisationsList.new(organisations), "ls"
+      add_command OrganisationsSelect.new(organisations), "cd"
     end
   end
 end
