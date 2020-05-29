@@ -33,8 +33,11 @@ module Semaph
 
     def get(path, params = {})
       url = "#{@base}/#{path}"
+      puts url if ENV["SEMAPH_DEBUG"]
       response = Faraday.get(url, params, headers)
-      check_response(response, url)
+      check_response(response, url).tap do |hash|
+        pp hash if ENV["SEMAPH_DEBUG"]
+      end
     end
 
     def headers
@@ -46,7 +49,7 @@ module Semaph
     end
 
     def check_response(response, url)
-      return JSON.parse response.body if response.status == 200
+      return JSON.parse(response.body) if response.status == 200
 
       puts "http response #{response.status} received for #{url}:\n#{response.body}"
       exit 1
