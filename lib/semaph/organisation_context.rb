@@ -8,11 +8,10 @@ module Semaph
     include ShellShock::Context
 
     def initialize(organisation)
-      @host = organisation["host"]
-      @token = organisation["auth"]["token"]
-      @prompt = "#{@host} > "
+      host = organisation["host"]
+      @prompt = "#{host} > "
       @state = { projects: [] }
-      api = Api.new(@token, @host)
+      api = Api.new(organisation["auth"]["token"], host)
       add_command ProjectsList.new(api, @state), "ls"
       add_command ProjectsSelect.new(api, @state), "cd"
     end

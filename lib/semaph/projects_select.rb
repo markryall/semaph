@@ -1,3 +1,5 @@
+require "semaph/project_context"
+
 module Semaph
   class ProjectsSelect
     attr_reader :usage, :help
@@ -10,16 +12,14 @@ module Semaph
     end
 
     def completion(text)
-      @parent_state[:projects].map do |project|
-        project[:name]
-      end.grep(/^#{text}/).sort
+      @parent_state[:projects].map { |project| project[:name] }.grep(/^#{text}/).sort
     end
 
     def execute(name)
       selected_project = @parent_state[:projects].find do |project|
         project[:name] == name
       end
-      puts "you have selected #{selected_project[:id]}"
+      ProjectContext.new(@api, selected_project).push
     end
   end
 end
