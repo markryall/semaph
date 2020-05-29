@@ -1,0 +1,19 @@
+module Semaph
+  class OrganisationsSelect
+    attr_reader :usage, :help
+
+    def initialize(organisations)
+      @organisations = organisations
+      @usage = "<organisation>"
+      @help = "choose organisation"
+    end
+
+    def completion(text)
+      @organisations.keys.grep(/^#{text}/).sort
+    end
+
+    def execute(name)
+      puts "you chose #{name}"
+    end
+  end
+end
