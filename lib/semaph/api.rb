@@ -16,8 +16,8 @@ module Semaph
       get "projects"
     end
 
-    def workflows(project_id, branch_name)
-      get "plumber-workflows", { project_id: project_id, branch_name: branch_name }
+    def workflows(project_id)
+      get "plumber-workflows", { project_id: project_id }
     end
 
     def pipelines(project_id, options)
