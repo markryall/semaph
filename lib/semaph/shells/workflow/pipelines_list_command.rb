@@ -10,8 +10,8 @@ module Semaph
         end
 
         def execute(_whatever)
-          @pipeline_collection.all.each do |pipeline|
-            puts "#{pipeline.yaml} #{pipeline.state} #{pipeline.result}"
+          @pipeline_collection.all.each_with_index do |pipeline, index|
+            puts "#{index + 1} #{pipeline.yaml} #{pipeline.state} #{pipeline.result}"
           end
         end
       end

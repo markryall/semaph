@@ -1,5 +1,6 @@
 require "semaph/commands/reload_command"
 require "semaph/shells/workflow/pipelines_list_command"
+require "semaph/shells/workflow/pipelines_select_command"
 require "shell_shock/context"
 
 module Semaph
@@ -14,6 +15,7 @@ module Semaph
           @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} > "
           pipeline_collection = workflow.pipeline_collection
           add_command PipelinesListCommand.new(pipeline_collection), "ls"
+          add_command PipelinesSelectCommand.new(pipeline_collection), "cd"
           add_command(
             ::Semaph::Commands::ReloadCommand.new(pipeline_collection, "reload pipelines"),
             "reload",
