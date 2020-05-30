@@ -16,17 +16,17 @@ module Semaph
           add_github_command(project)
           add_command(
             ::Semaph::Commands::ReloadCommand.new(workflow_collection, "reload workflows"),
-            "reload",
+            "reload-workflows",
           )
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "https://#{project.client.host}/projects/#{project.name}",
               "browse to project",
             ),
-            "open",
+            "open-project",
           )
-          add_command WorkflowsListCommand.new(workflow_collection), "ls"
-          add_command WorkflowsSelectCommand.new(workflow_collection), "cd"
+          add_command WorkflowsListCommand.new(workflow_collection), "list-workflows"
+          add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow"
         end
 
         private
@@ -39,7 +39,7 @@ module Semaph
               project.github_url,
               "browse to github project",
             ),
-            "github",
+            "open-github",
           )
         end
       end

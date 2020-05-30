@@ -15,8 +15,8 @@ module Semaph
           project = @workflow.project
           @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} > "
           pipeline_collection = workflow.pipeline_collection
-          add_command PipelinesListCommand.new(pipeline_collection), "ls"
-          add_command PipelinesSelectCommand.new(pipeline_collection), "cd"
+          add_command PipelinesListCommand.new(pipeline_collection), "list-pipelines"
+          add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "https://#{project.client.host}/workflows/#{workflow.id}",
@@ -34,7 +34,7 @@ module Semaph
           add_github_commands(workflow)
           add_command(
             ::Semaph::Commands::ReloadCommand.new(pipeline_collection, "reload pipelines"),
-            "reload",
+            "reload-pipelines",
           )
         end
 
@@ -48,14 +48,14 @@ module Semaph
               "#{workflow.project.github_url}/tree/#{workflow.branch}",
               "browse to the branch in github",
             ),
-            "github-branch",
+            "open-github-branch",
           )
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "#{workflow.project.github_url}/commit/#{workflow.sha}",
               "browse to the commit in github",
             ),
-            "github-commit",
+            "open-github-commit",
           )
         end
       end

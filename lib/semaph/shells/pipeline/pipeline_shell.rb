@@ -15,9 +15,9 @@ module Semaph
           job_collection = pipeline.job_collection
           add_command(
             ::Semaph::Commands::ReloadCommand.new(job_collection, "reload jobs"),
-            "reload",
+            "reload-jobs",
           )
-          add_command JobsListCommand.new(job_collection), "ls"
+          add_command JobsListCommand.new(job_collection), "list-jobs"
         end
       end
     end

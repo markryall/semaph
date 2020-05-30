@@ -11,8 +11,8 @@ module Semaph
         def initialize(organisations)
           @organisations = organisations
           @prompt = "🏗  > "
-          add_command OrganisationsListCommand.new(organisations), "ls"
-          add_command OrganisationsSelectCommand.new(organisations), "cd"
+          add_command OrganisationsListCommand.new(organisations), "list-organisations"
+          add_command OrganisationsSelectCommand.new(organisations), "select-organisation"
         end
       end
     end

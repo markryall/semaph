@@ -16,11 +16,11 @@ module Semaph
           @prompt = "🏗  #{host} > "
           client = ::Semaph::Api.new(organisation["auth"]["token"], host)
           project_collection = ::Semaph::Model::ProjectCollection.new(client)
-          add_command ProjectsListCommand.new(project_collection), "ls"
-          add_command ProjectsSelectCommand.new(project_collection), "cd"
+          add_command ProjectsListCommand.new(project_collection), "list-projects"
+          add_command ProjectsSelectCommand.new(project_collection), "select-project"
           add_command(
             ::Semaph::Commands::ReloadCommand.new(project_collection, "reload projects"),
-            "reload",
+            "reload-projects",
           )
         end
       end
