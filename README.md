@@ -86,7 +86,7 @@ You can also `open-github-branch`, `open-github-commit` to see the branch/commit
 `open-workflow`, `open-branch` to see the semaphore branch/workflow in a browser and `reload-pipelines` to see
 any changes that have happened in semaphore.
 
-#### pipeline shell
+### pipeline shell
 
     🏗  foo.semaphoreci.com my-app workflowuuid semaphore.yml >
 
