@@ -5,15 +5,14 @@ module Semaph
     class WorkflowCollection
       attr_reader :all
 
-      def initialize(client, project)
-        @client = client
+      def initialize(project)
         @project = project
         reload
       end
 
       def reload
-        @all = @client.workflows(@project.id).map do |content|
-          Workflow.new @client, content
+        @all = @project.client.workflows(@project.id).map do |content|
+          Workflow.new @project, content
         end
       end
     end

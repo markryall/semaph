@@ -1,6 +1,7 @@
 require "semaph/commands/visit_url_command"
 require "semaph/commands/reload_command"
 require "semaph/shells/project/workflows_list_command"
+require "semaph/shells/project/workflows_select_command"
 require "shell_shock/context"
 
 module Semaph
@@ -18,6 +19,7 @@ module Semaph
             "reload",
           )
           add_command WorkflowsListCommand.new(workflow_collection), "ls"
+          add_command WorkflowsSelectCommand.new(workflow_collection), "cd"
         end
 
         private

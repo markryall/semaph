@@ -27,7 +27,7 @@ module Semaph
       end
 
       def workflow_collection
-        WorkflowCollection.new(@client, self)
+        WorkflowCollection.new(self)
       end
     end
   end
