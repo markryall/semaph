@@ -20,8 +20,8 @@ module Semaph
       get "plumber-workflows", { project_id: project_id }
     end
 
-    def pipelines(project_id, options)
-      get "pipelines", options.merge({ project_id: project_id })
+    def pipelines(options)
+      get "pipelines", options
     end
 
     def pipeline(id)

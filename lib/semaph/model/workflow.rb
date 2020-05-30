@@ -1,3 +1,5 @@
+require "semaph/model/pipeline_collection"
+
 module Semaph
   module Model
     class Workflow
@@ -12,6 +14,10 @@ module Semaph
         @branch = raw["branch_name"]
         @branch_id = raw["branch_id"]
         # @summary = `git log -n 1 --format="%h %an %ci %s" #{sha}`
+      end
+
+      def pipeline_collection
+        PipelineCollection.new(self)
       end
     end
   end
