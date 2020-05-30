@@ -18,6 +18,13 @@ module Semaph
             ::Semaph::Commands::ReloadCommand.new(workflow_collection, "reload workflows"),
             "reload",
           )
+          add_command(
+            ::Semaph::Commands::VisitUrlCommand.new(
+              "https://#{project.client.host}/projects/#{project.name}",
+              "browse to project",
+            ),
+            "open",
+          )
           add_command WorkflowsListCommand.new(workflow_collection), "ls"
           add_command WorkflowsSelectCommand.new(workflow_collection), "cd"
         end
