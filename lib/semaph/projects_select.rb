@@ -11,11 +11,11 @@ module Semaph
     end
 
     def completion(text)
-      @project_collection.map(&:name).grep(/^#{text}/).sort
+      @project_collection.all.map(&:name).grep(/^#{text}/).sort
     end
 
     def execute(name)
-      selected_project = @project_collection.find { |project| project.name == name }
+      selected_project = @project_collection.all.find { |project| project.name == name }
       ProjectContext.new(selected_project).push
     end
   end
