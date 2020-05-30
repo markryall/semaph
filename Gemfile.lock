@@ -9,10 +9,15 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.2)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
+    method_source (1.0.0)
     minitest (5.14.1)
     multipart-post (2.1.1)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rainbow (3.0.0)
     rake (12.3.3)
     shell_shock (0.0.5)
@@ -22,6 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest (~> 5.0)
+  pry
   rake (~> 12.0)
   semaph!
 
