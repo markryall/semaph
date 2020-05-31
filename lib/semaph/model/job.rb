@@ -20,6 +20,24 @@ module Semaph
         assign_from_block(raw_block)
       end
 
+      def description
+        [
+          icon,
+          @block_name,
+          @block_state,
+          @block_result,
+          @name,
+        ].join(" ")
+      end
+
+      def icon
+        return "🔵" unless @status == "FINISHED"
+
+        return "🟢" unless @result == "FAILED"
+
+        "🔴"
+      end
+
       private
 
       def assign_from_job(raw)

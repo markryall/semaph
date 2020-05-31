@@ -1,4 +1,5 @@
 require "semaph/shells/pipeline/jobs_list_command"
+require "semaph/shells/pipeline/jobs_poll_command"
 require "shell_shock/context"
 
 module Semaph
@@ -9,8 +10,6 @@ module Semaph
 
         def initialize(pipeline)
           @pipeline = pipeline
-          workflow = pipeline.workflow
-          project = workflow.project
           @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} #{pipeline.yaml} > "
           job_collection = pipeline.job_collection
           add_command(
@@ -18,6 +17,17 @@ module Semaph
             "reload-jobs",
           )
           add_command JobsListCommand.new(job_collection), "list-jobs"
+          add_command JobsPollCommand.new(job_collection), "poll-jobs"
+        end
+
+        private
+
+        def project
+          workflow.project
+        end
+
+        def workflow
+          @pipeline.workflow
         end
       end
     end
