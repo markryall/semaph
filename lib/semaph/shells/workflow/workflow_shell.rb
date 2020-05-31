@@ -8,15 +8,35 @@ module Semaph
   module Shells
     module Workflow
       class WorkflowShell
+        attr_reader :workflow
+
         include ShellShock::Context
 
         def initialize(workflow)
           @workflow = workflow
-          project = @workflow.project
           @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} > "
-          pipeline_collection = workflow.pipeline_collection
+          add_commands
+        end
+
+        private
+
+        def project
+          @workflow.project
+        end
+
+        def pipeline_collection
+          @workflow.pipeline_collection
+        end
+
+        def add_commands
           add_command PipelinesListCommand.new(pipeline_collection), "list-pipelines"
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
+          add_open_branch_command
+          add_reload_command
+          add_github_commands
+        end
+
+        def add_open_workflow_command
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "https://#{project.client.host}/workflows/#{workflow.id}",
@@ -24,6 +44,9 @@ module Semaph
             ),
             "open-workflow",
           )
+        end
+
+        def add_open_branch_command
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "https://#{project.client.host}/branches/#{workflow.branch_id}",
@@ -31,18 +54,23 @@ module Semaph
             ),
             "open-branch",
           )
-          add_github_commands(workflow)
+        end
+
+        def add_reload_command
           add_command(
             ::Semaph::Commands::ReloadCommand.new(pipeline_collection, "reload pipelines"),
             "reload-pipelines",
           )
         end
 
-        private
-
-        def add_github_commands(workflow)
+        def add_github_commands
           return unless workflow.project.github_url
 
+          add_github_branch
+          add_github_commit
+        end
+
+        def add_github_branch
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "#{workflow.project.github_url}/tree/#{workflow.branch}",
@@ -50,6 +78,9 @@ module Semaph
             ),
             "open-github-branch",
           )
+        end
+
+        def add_github_commit
           add_command(
             ::Semaph::Commands::VisitUrlCommand.new(
               "#{workflow.project.github_url}/commit/#{workflow.sha}",

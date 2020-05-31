@@ -8,30 +8,34 @@ module Semaph
   module Shells
     module Project
       class ProjectShell
+        attr_reader :project
+
         include ShellShock::Context
 
         def initialize(project)
+          @project = project
           @prompt = "🏗  #{project.client.host} #{project.name} > "
-          workflow_collection = project.workflow_collection
-          add_github_command(project)
+          add_commands
+        end
+
+        private
+
+        def workflow_collection
+          project.workflow_collection
+        end
+
+        def add_commands
+          add_github_command
+          add_open_project_command
           add_command(
             ::Semaph::Commands::ReloadCommand.new(workflow_collection, "reload workflows"),
             "reload-workflows",
-          )
-          add_command(
-            ::Semaph::Commands::VisitUrlCommand.new(
-              "https://#{project.client.host}/projects/#{project.name}",
-              "browse to project",
-            ),
-            "open-project",
           )
           add_command WorkflowsListCommand.new(workflow_collection), "list-workflows"
           add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow"
         end
 
-        private
-
-        def add_github_command(project)
+        def add_github_command
           return unless project.github_url
 
           add_command(
@@ -40,6 +44,16 @@ module Semaph
               "browse to github project",
             ),
             "open-github",
+          )
+        end
+
+        def add_open_project_command
+          add_command(
+            ::Semaph::Commands::VisitUrlCommand.new(
+              "https://#{project.client.host}/projects/#{project.name}",
+              "browse to project",
+            ),
+            "open-project",
           )
         end
       end

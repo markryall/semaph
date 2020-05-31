@@ -12,15 +12,19 @@ module Semaph
         def execute(_whatever)
           while incomplete_jobs.count.positive?
             puts "#{incomplete_jobs.count} incomplete jobs remaining:"
-            incomplete_jobs.each { |job| puts job.description }
+            describe_jobs(incomplete_jobs)
             sleep 5
             @job_collection.reload
           end
           puts "All jobs have completed:"
-          @job_collection.all.each { |job| puts job.description }
+          describe_jobs(@job_collection)
         end
 
         private
+
+        def describe_jobs(collection)
+          collection.each { |job| puts job.description }
+        end
 
         def incomplete_jobs
           @job_collection.all.reject { |job| job.status == "FINISHED" }

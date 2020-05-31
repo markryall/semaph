@@ -55,4 +55,3 @@ module Semaph
     end
   end
 end
-
