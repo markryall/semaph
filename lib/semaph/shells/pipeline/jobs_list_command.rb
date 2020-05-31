@@ -19,13 +19,20 @@ module Semaph
 
         def description(job)
           [
+            icon(job),
             job.block_name,
             job.block_state,
             job.block_result,
             job.name,
-            job.status,
-            job.result,
           ].join(" ")
+        end
+
+        def icon(job)
+          return "🔵" unless job.status == "FINISHED"
+
+          return "🟢" unless job.status == "FAILED"
+
+          "🔴"
         end
       end
     end
