@@ -21,6 +21,14 @@ module Semaph
       get "plumber-workflows", { project_id: project_id }
     end
 
+    def workflow(workflow_id)
+      get "plumber-workflows/#{workflow_id}"
+    end
+
+    def rerun_workflow(workflow_id)
+      post "plumber-workflows/#{workflow_id}/reschedule?request_token=#{workflow_id}"
+    end
+
     def pipelines(options)
       get "pipelines", options
     end
@@ -39,6 +47,14 @@ module Semaph
       url = "#{@base}/#{path}"
       puts url if ENV["SEMAPH_DEBUG"]
       response = Faraday.get(url, params, headers)
+      check_response(response, url).tap do |hash|
+        pp hash if ENV["SEMAPH_DEBUG"]
+      end
+    end
+
+    def post(path, params = {})
+      url = "#{@base}/#{path}"
+      response = Faraday.post(url, params.to_json, headers)
       check_response(response, url).tap do |hash|
         pp hash if ENV["SEMAPH_DEBUG"]
       end

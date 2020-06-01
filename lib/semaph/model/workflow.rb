@@ -19,6 +19,12 @@ module Semaph
       def pipeline_collection
         @pipeline_collection ||= PipelineCollection.new(self)
       end
+
+      def rerun
+        rerun_response = project.client.rerun_workflow(@id)
+        workflow_response = project.client.workflow(rerun_response["wf_id"])
+        Workflow.new(project, workflow_response["workflow"])
+      end
     end
   end
 end
