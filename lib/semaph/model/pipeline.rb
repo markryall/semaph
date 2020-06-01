@@ -28,6 +28,8 @@ module Semaph
       def icon
         return "🔵" unless @state == "DONE"
 
+        return "⛔" if @result == "STOPPED"
+
         return "🟢" if @result == "PASSED"
 
         "🔴"
