@@ -30,7 +30,7 @@ module Semaph
       end
 
       # block_state can be waiting/running/done
-      # block_result can be passed/failed/canceled
+      # block_result can be passed/failed/canceled/stopped
       def block_icon
         return "🟠" if @block_state == "waiting"
 
@@ -38,17 +38,21 @@ module Semaph
 
         return "⚪" if @block_result == "canceled"
 
+        return "⛔" if @block_result == "stopped"
+
         return "🟢" if @block_result == "passed"
 
         "🔴"
       end
 
       # status can be FINISHED/RUNNING
-      # result can be PASSED/FAILED
+      # result can be PASSED/FAILED/STOPPED
       def job_icon
         return nil unless @status
 
         return "🔵" unless @status == "FINISHED"
+
+        return "⛔" if @result == "STOPPED"
 
         return "🟢" if @result == "PASSED"
 
