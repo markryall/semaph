@@ -1,3 +1,4 @@
+require "semaph/commands/reload_command"
 require "semaph/commands/visit_url_command"
 require "semaph/shells/workflow/pipelines_list_command"
 require "semaph/shells/workflow/pipelines_select_command"
@@ -34,6 +35,7 @@ module Semaph
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
           add_open_branch_command
           add_github_commands
+          add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
 
         def add_open_workflow_command

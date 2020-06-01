@@ -1,4 +1,5 @@
 require "semaph/api"
+require "semaph/commands/reload_command"
 require "semaph/model/project_collection"
 require "semaph/shells/organisation/projects_list_command"
 require "semaph/shells/organisation/projects_select_command"
@@ -24,6 +25,7 @@ module Semaph
           @project_list_command = ProjectsListCommand.new(project_collection)
           add_command @project_list_command, "list-projects"
           add_command ProjectsSelectCommand.new(project_collection), "select-project"
+          add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
       end
     end

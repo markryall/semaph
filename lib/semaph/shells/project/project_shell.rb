@@ -1,3 +1,4 @@
+require "semaph/commands/reload_command"
 require "semaph/commands/visit_url_command"
 require "semaph/shells/project/workflows_list_command"
 require "semaph/shells/project/workflows_select_command"
@@ -30,6 +31,7 @@ module Semaph
           @workflows_list_command = WorkflowsListCommand.new(workflow_collection)
           add_command @workflows_list_command, "list-workflows"
           add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow"
+          add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
 
         def add_github_command
