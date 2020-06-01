@@ -1,4 +1,5 @@
 require "semaph/shells/workflow/workflow_shell"
+require "semaph/shells/pipeline/pipeline_shell"
 
 module Semaph
   module Shells
