@@ -34,6 +34,7 @@ module Semaph
           add_command @list_command, "list-pipelines"
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
           add_open_branch_command
+          add_open_workflow_command
           add_github_commands
           add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
