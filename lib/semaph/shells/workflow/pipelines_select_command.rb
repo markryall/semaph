@@ -14,9 +14,15 @@ module Semaph
 
         def execute(index_string)
           index = index_string.to_i - 1
-          ::Semaph::Shells::Pipeline::PipelineShell.new(
-            @pipeline_collection.all[index],
-          ).push
+
+          pipeline = @pipeline_collection.all[index]
+
+          unless pipeline
+            puts "There is no pipeline at position #{index}"
+            return
+          end
+
+          ::Semaph::Shells::Pipeline::PipelineShell.new(pipeline).push
         end
       end
     end
