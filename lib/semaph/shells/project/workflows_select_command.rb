@@ -23,19 +23,7 @@ module Semaph
             return
           end
 
-          load_shell(workflow)
-        end
-
-        private
-
-        def load_shell(workflow)
-          workflow.pipeline_collection.reload
-
-          if workflow.pipeline_collection.all.count == 1
-            ::Semaph::Shells::Pipeline::PipelineShell.new(workflow.pipeline_collection.all.first).push
-          else
-            ::Semaph::Shells::Workflow::WorkflowShell.new(workflow).push
-          end
+          ::Semaph::Shells::Workflow::WorkflowShell.new(workflow).push
         end
       end
     end
