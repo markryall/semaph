@@ -25,6 +25,10 @@ module Semaph
         workflow_response = project.client.workflow(rerun_response["wf_id"])
         Workflow.new(project, workflow_response["workflow"])
       end
+
+      def stop
+        project.client.stop_workflow(@id)
+      end
     end
   end
 end

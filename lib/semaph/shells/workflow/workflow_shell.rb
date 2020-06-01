@@ -1,5 +1,6 @@
 require "semaph/commands/reload_command"
 require "semaph/commands/rerun_workflow_command"
+require "semaph/commands/stop_workflow_command"
 require "semaph/commands/visit_url_command"
 require "semaph/shells/workflow/pipelines_list_command"
 require "semaph/shells/workflow/pipelines_select_command"
@@ -35,6 +36,7 @@ module Semaph
           add_command @list_command, "list-pipelines"
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
           add_command ::Semaph::Commands::RerunWorkflowCommand.new(workflow), "rerun"
+          add_command ::Semaph::Commands::StopWorkflowCommand.new(workflow), "stop"
           add_open_branch_command
           add_open_workflow_command
           add_github_commands

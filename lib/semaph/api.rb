@@ -25,6 +25,10 @@ module Semaph
       get "plumber-workflows/#{workflow_id}"
     end
 
+    def stop_workflow(workflow_id)
+      post "plumber-workflows/#{workflow_id}/terminate"
+    end
+
     def rerun_workflow(workflow_id)
       post "plumber-workflows/#{workflow_id}/reschedule?request_token=#{workflow_id}"
     end
