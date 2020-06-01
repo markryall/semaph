@@ -27,7 +27,7 @@ module Semaph
       end
 
       def workflow_collection
-        WorkflowCollection.new(self)
+        @workflow_collection ||= WorkflowCollection.new(self)
       end
     end
   end

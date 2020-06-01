@@ -18,7 +18,7 @@ module Semaph
       end
 
       def job_collection
-        JobCollection.new(self)
+        @job_collection ||= JobCollection.new(self)
       end
 
       private

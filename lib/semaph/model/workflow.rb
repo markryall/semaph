@@ -17,7 +17,7 @@ module Semaph
       end
 
       def pipeline_collection
-        PipelineCollection.new(self)
+        @pipeline_collection ||= PipelineCollection.new(self)
       end
     end
   end
