@@ -4,11 +4,12 @@ require "json"
 module Semaph
   # Refer to https://docs.semaphoreci.com/reference/api-v1alpha/
   class Api
-    attr_reader :host
+    attr_reader :host, :name
 
     def initialize(token, host)
       @token = token
       @host = host
+      @name = host.split(".").first
       @base = "https://#{host}/api/v1alpha"
     end
 

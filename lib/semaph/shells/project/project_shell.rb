@@ -14,7 +14,7 @@ module Semaph
 
         def initialize(project)
           @project = project
-          @prompt = "🏗  #{project.client.host} #{project.name} > "
+          @prompt = "🏗  #{project.client.name} #{project.name} > "
           add_commands
         end
 

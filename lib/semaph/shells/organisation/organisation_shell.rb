@@ -12,9 +12,8 @@ module Semaph
         include ShellShock::Context
 
         def initialize(organisation)
-          host = organisation["host"]
-          @prompt = "🏗  #{host} > "
-          client = ::Semaph::Api.new(organisation["auth"]["token"], host)
+          client = ::Semaph::Api.new(organisation["auth"]["token"], organisation["host"])
+          @prompt = "🏗  #{client.name} > "
           project_collection = ::Semaph::Model::ProjectCollection.new(client)
           add_command ProjectsListCommand.new(project_collection), "list-projects"
           add_command ProjectsSelectCommand.new(project_collection), "select-project"

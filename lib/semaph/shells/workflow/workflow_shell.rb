@@ -14,7 +14,7 @@ module Semaph
 
         def initialize(workflow)
           @workflow = workflow
-          @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} > "
+          @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} > "
           add_commands
         end
 

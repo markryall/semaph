@@ -12,7 +12,7 @@ module Semaph
 
         def initialize(pipeline)
           @pipeline = pipeline
-          @prompt = "🏗  #{project.client.host} #{project.name} #{workflow.id} #{pipeline.yaml} > "
+          @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} #{pipeline.yaml} > "
           add_commands
         end
 
