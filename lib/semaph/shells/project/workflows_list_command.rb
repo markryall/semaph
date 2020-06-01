@@ -13,6 +13,7 @@ module Semaph
         end
 
         def execute(branch)
+          @workflow_collection.reload
           @workflow_collection.all.each_with_index do |workflow, index|
             next unless workflow.branch.include?(branch)
 

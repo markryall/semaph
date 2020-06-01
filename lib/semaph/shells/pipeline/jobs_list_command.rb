@@ -10,6 +10,7 @@ module Semaph
         end
 
         def execute(_whatever)
+          @job_collection.reload
           @job_collection.all.each { |job| puts job.description }
         end
       end

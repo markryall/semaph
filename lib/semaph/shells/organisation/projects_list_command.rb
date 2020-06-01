@@ -10,6 +10,7 @@ module Semaph
         end
 
         def execute(_whatever)
+          @project_collection.reload
           @project_collection.all.each do |project|
             puts project.name
           end

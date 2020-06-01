@@ -10,6 +10,7 @@ module Semaph
         end
 
         def execute(_whatever)
+          @pipeline_collection.reload
           @pipeline_collection.all.each_with_index do |pipeline, index|
             puts "#{index + 1} #{icon(pipeline)} #{pipeline.yaml}"
           end

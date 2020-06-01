@@ -7,7 +7,6 @@ module Semaph
 
       def initialize(pipeline)
         @pipeline = pipeline
-        reload
       end
 
       def reload

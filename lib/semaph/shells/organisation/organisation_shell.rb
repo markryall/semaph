@@ -1,5 +1,4 @@
 require "semaph/api"
-require "semaph/commands/reload_command"
 require "semaph/model/project_collection"
 require "semaph/shells/organisation/projects_list_command"
 require "semaph/shells/organisation/projects_select_command"
@@ -12,15 +11,19 @@ module Semaph
         include ShellShock::Context
 
         def initialize(organisation)
-          client = ::Semaph::Api.new(organisation["auth"]["token"], organisation["host"])
-          @prompt = "🏗  #{client.name} > "
-          project_collection = ::Semaph::Model::ProjectCollection.new(client)
-          add_command ProjectsListCommand.new(project_collection), "list-projects"
+          @client = ::Semaph::Api.new(organisation["auth"]["token"], organisation["host"])
+          @prompt = "🏗  #{@client.name} > "
+          add_commands
+          @project_list_command.execute("")
+        end
+
+        private
+
+        def add_commands
+          project_collection = ::Semaph::Model::ProjectCollection.new(@client)
+          @project_list_command = ProjectsListCommand.new(project_collection)
+          add_command @project_list_command, "list-projects"
           add_command ProjectsSelectCommand.new(project_collection), "select-project"
-          add_command(
-            ::Semaph::Commands::ReloadCommand.new(project_collection, "reload projects"),
-            "reload-projects",
-          )
         end
       end
     end

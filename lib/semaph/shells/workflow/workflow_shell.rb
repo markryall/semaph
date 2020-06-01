@@ -1,5 +1,4 @@
 require "semaph/commands/visit_url_command"
-require "semaph/commands/reload_command"
 require "semaph/shells/workflow/pipelines_list_command"
 require "semaph/shells/workflow/pipelines_select_command"
 require "shell_shock/context"
@@ -16,6 +15,7 @@ module Semaph
           @workflow = workflow
           @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} > "
           add_commands
+          @list_command.execute("")
         end
 
         private
@@ -29,10 +29,10 @@ module Semaph
         end
 
         def add_commands
-          add_command PipelinesListCommand.new(pipeline_collection), "list-pipelines"
+          @list_command = PipelinesListCommand.new(pipeline_collection)
+          add_command @list_command, "list-pipelines"
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
           add_open_branch_command
-          add_reload_command
           add_github_commands
         end
 
@@ -53,13 +53,6 @@ module Semaph
               "browse to branch in semaphore",
             ),
             "open-branch",
-          )
-        end
-
-        def add_reload_command
-          add_command(
-            ::Semaph::Commands::ReloadCommand.new(pipeline_collection, "reload pipelines"),
-            "reload-pipelines",
           )
         end
 

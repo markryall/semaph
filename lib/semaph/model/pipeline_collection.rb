@@ -7,7 +7,6 @@ module Semaph
 
       def initialize(workflow)
         @workflow = workflow
-        reload
       end
 
       def reload

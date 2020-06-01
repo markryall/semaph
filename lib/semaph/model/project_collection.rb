@@ -7,7 +7,6 @@ module Semaph
 
       def initialize(client)
         @client = client
-        reload
       end
 
       def reload

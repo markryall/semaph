@@ -1,5 +1,4 @@
 require "semaph/commands/visit_url_command"
-require "semaph/commands/reload_command"
 require "semaph/shells/project/workflows_list_command"
 require "semaph/shells/project/workflows_select_command"
 require "shell_shock/context"
@@ -16,6 +15,7 @@ module Semaph
           @project = project
           @prompt = "🏗  #{project.client.name} #{project.name} > "
           add_commands
+          @workflows_list_command.execute("")
         end
 
         private
@@ -27,11 +27,8 @@ module Semaph
         def add_commands
           add_github_command
           add_open_project_command
-          add_command(
-            ::Semaph::Commands::ReloadCommand.new(workflow_collection, "reload workflows"),
-            "reload-workflows",
-          )
-          add_command WorkflowsListCommand.new(workflow_collection), "list-workflows"
+          @workflows_list_command = WorkflowsListCommand.new(workflow_collection)
+          add_command @workflows_list_command, "list-workflows"
           add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow"
         end
 

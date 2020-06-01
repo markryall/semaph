@@ -7,7 +7,6 @@ module Semaph
 
       def initialize(project)
         @project = project
-        reload
       end
 
       def reload
