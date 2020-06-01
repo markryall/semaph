@@ -13,11 +13,11 @@ module Semaph
           while incomplete_jobs.count.positive?
             puts "#{incomplete_jobs.count} incomplete jobs remaining:"
             describe_jobs(incomplete_jobs)
-            sleep 5
+            sleep 20
             @job_collection.reload
           end
           puts "All jobs have completed:"
-          describe_jobs(@job_collection)
+          describe_jobs(@job_collection.all)
         end
 
         private
