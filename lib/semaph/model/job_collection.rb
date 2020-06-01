@@ -15,6 +15,10 @@ module Semaph
         @all = build_jobs(project.client.pipeline(@pipeline.id))
       end
 
+      def incomplete_jobs
+        @all.reject { |job| job.block_state == "done" }
+      end
+
       private
 
       def build_jobs(content)
@@ -22,11 +26,17 @@ module Semaph
         blocks = content.delete("blocks")
         blocks.each do |block|
           jobs = block.delete("jobs").sort_by { |job| job["index"] }
-          jobs.each do |job|
-            result << Job.new(@pipeline, block, job)
-          end
+          append_jobs(result, block, jobs)
         end
         result
+      end
+
+      def append_jobs(result, block, jobs)
+        if jobs.count.positive?
+          jobs.each { |job| result << Job.new(@pipeline, block, job) }
+        else
+          result << Job.new(@pipeline, block, {})
+        end
       end
     end
   end

@@ -26,13 +26,17 @@ module Semaph
           @block_name,
           job_icon,
           @name,
-        ].join(" ")
+        ].compact.join(" ")
       end
 
-      # block_state can be done/running
-      # block_result can be passed/failed
+      # block_state can be waiting/running/done
+      # block_result can be passed/failed/canceled
       def block_icon
-        return "🔵" unless @block_state == "done"
+        return "🟠" if @block_state == "waiting"
+
+        return "🔵" if @block_state == "running"
+
+        return "⚪" if @block_result == "canceled"
 
         return "🟢" if @block_result == "passed"
 
@@ -42,6 +46,8 @@ module Semaph
       # status can be FINISHED/RUNNING
       # result can be PASSED/FAILED
       def job_icon
+        return nil unless @status
+
         return "🔵" unless @status == "FINISHED"
 
         return "🟢" if @result == "PASSED"

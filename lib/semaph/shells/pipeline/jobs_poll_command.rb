@@ -10,7 +10,7 @@ module Semaph
         end
 
         def execute(_whatever)
-          while incomplete_jobs.count.positive?
+          while (incomplete_jobs = @job_collection.incomplete_jobs).count.positive?
             puts "#{incomplete_jobs.count} incomplete jobs remaining:"
             describe_jobs(incomplete_jobs)
             sleep 20
@@ -24,10 +24,6 @@ module Semaph
 
         def describe_jobs(collection)
           collection.each { |job| puts job.description }
-        end
-
-        def incomplete_jobs
-          @job_collection.all.reject { |job| job.status == "FINISHED" }
         end
       end
     end
