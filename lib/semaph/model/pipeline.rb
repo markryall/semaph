@@ -21,6 +21,18 @@ module Semaph
         @job_collection ||= JobCollection.new(self)
       end
 
+      def description
+        "#{icon} #{yaml}"
+      end
+
+      def icon
+        return "🔵" unless @state == "DONE"
+
+        return "🟢" if @result == "PASSED"
+
+        "🔴"
+      end
+
       private
 
       def extract_time(name)

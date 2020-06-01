@@ -22,18 +22,29 @@ module Semaph
 
       def description
         [
-          icon,
+          block_icon,
           @block_name,
-          @block_state,
-          @block_result,
+          job_icon,
           @name,
         ].join(" ")
       end
 
-      def icon
+      # block_state can be done/running
+      # block_result can be passed/failed
+      def block_icon
+        return "🔵" unless @block_state == "done"
+
+        return "🟢" if @block_result == "passed"
+
+        "🔴"
+      end
+
+      # status can be FINISHED/RUNNING
+      # result can be PASSED/FAILED
+      def job_icon
         return "🔵" unless @status == "FINISHED"
 
-        return "🟢" unless @result == "FAILED"
+        return "🟢" if @result == "PASSED"
 
         "🔴"
       end

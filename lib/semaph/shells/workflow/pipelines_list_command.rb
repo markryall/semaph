@@ -12,16 +12,8 @@ module Semaph
         def execute(_whatever)
           @pipeline_collection.reload
           @pipeline_collection.all.each_with_index do |pipeline, index|
-            puts "#{index + 1} #{icon(pipeline)} #{pipeline.yaml}"
+            puts "#{index + 1} #{pipeline.description}"
           end
-        end
-
-        def icon(pipeline)
-          return "🔵" unless pipeline.state == "DONE"
-
-          return "🟢" unless pipeline.result == "FAILED"
-
-          "🔴"
         end
       end
     end
