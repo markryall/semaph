@@ -60,8 +60,6 @@ If you have only one set of credentials in `~/.sem.yml` then this will be the in
 
 From here you can `list-projects` and then `select-project` to enter a shell for that project.
 
-If new projects have been added/removed while you are using this shell, you can `reload-projects`.
-
 ### project shell
 
      🏗  foo.semaphoreci.com my-app >
@@ -71,8 +69,8 @@ substring of the git branch you want to see workflows for) and then `select-work
 (where 'index' is the number displayed for each workflow `list-workflows` - tab completion on uuids
 seemed a bad idea) to enter a shell for that specific workflow.
 
-You can also `open-github` (opens a web browser for the github project associated with the project), `open-project`
-(opens the semaphoreci project in a browser) and `reload-workflows` (to see any new/changed workflows).
+You can also `open-github` (opens a web browser for the github project associated with the project) and `open-project`
+(opens the semaphoreci project in a browser).
 
 ### workflow shell
 
@@ -83,16 +81,22 @@ from `semaphore.yml` plus any promotion pipelines that might be executed.  You c
 what's happening with the pipeline.
 
 You can also `open-github-branch`, `open-github-commit` to see the branch/commit in a browser and
-`open-workflow`, `open-branch` to see the semaphore branch/workflow in a browser and `reload-pipelines` to see
-any changes that have happened in semaphore.
+`open-workflow`, `open-branch` to see the semaphore branch/workflow in a browser.
 
 ### pipeline shell
 
     🏗  foo.semaphoreci.com my-app workflowuuid semaphore.yml >
 
-From this shell, you can `list-jobs` and `reload-jobs`.
+From this shell, you can `list-jobs`, `poll-jobs`, `job-log` and `grep-logs`.
 
-Jobs are displayed with a flattened view of blocks and jobs for compactness.
+Job polling will stop as soon as any one job has failed and send a system notification
+(as long as `terminal-notifier` is installed).
+
+You can look at the log for a specific job (by the index presented in `list-jobs`) using `less`.
+
+You can grep across all jobs (using `ag`) with `grep-logs` which will download the logs for all completed jobs.
+
+You can also open the same browser views in semaphoreci and github from this shell.
 
 ## Development
 
