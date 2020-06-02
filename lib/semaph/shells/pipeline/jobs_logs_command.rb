@@ -11,9 +11,9 @@ module Semaph
 
         def execute(_whatever)
           @job_collection.failed.each do |job|
-            File.open("#{job.id}.log", "w") do |file|
-              file.puts job.log
-            end
+            filename = "#{job.id}.log"
+            File.open(filename, "w") { |file| file.puts job.log } unless File.exist?(filename)
+            system("less #{filename}")
           end
         end
       end
