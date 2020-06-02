@@ -11,7 +11,9 @@ module Semaph
 
         def execute(_whatever)
           @job_collection.reload
-          @job_collection.all.each { |job| puts job.description }
+          @job_collection.all.each_with_index do |job, index|
+            puts "#{index + 1} #{job.description}"
+          end
         end
       end
     end
