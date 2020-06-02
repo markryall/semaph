@@ -10,7 +10,7 @@ module Semaph
         end
 
         def execute(_whatever)
-          while (incomplete_jobs = @job_collection.incomplete_jobs).count.positive?
+          while (incomplete_jobs = @job_collection.incomplete).count.positive?
             puts "#{incomplete_jobs.count} incomplete jobs remaining:"
             describe_jobs(incomplete_jobs)
             sleep 20

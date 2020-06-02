@@ -15,7 +15,7 @@ module Semaph
         @all = build_jobs(project.client.pipeline(@pipeline.id))
       end
 
-      def incomplete_jobs
+      def incomplete
         @all.reject { |job| job.block_state == "done" }
       end
 
