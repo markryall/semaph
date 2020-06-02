@@ -10,7 +10,8 @@ module Semaph
       @token = token
       @host = host
       @name = host.split(".").first
-      @base = "https://#{host}/api/v1alpha"
+      @host_url = "https://#{host}"
+      @base = "#{@host_url}/api/v1alpha"
     end
 
     def projects
@@ -45,13 +46,24 @@ module Semaph
       get "jobs/#{id}"
     end
 
+    def job_log(id)
+      get_raw "jobs/#{id}/plain_logs.json"
+    end
+
     private
+
+    def get_raw(path, params = {})
+      url = "#{@host_url}/#{path}"
+      puts url if ENV["SEMAPH_DEBUG"]
+      response = Faraday.get(url, params, { "Authorization" => "Token #{@token}" })
+      check_response(response, url)
+    end
 
     def get(path, params = {})
       url = "#{@base}/#{path}"
       puts url if ENV["SEMAPH_DEBUG"]
       response = Faraday.get(url, params, headers)
-      check_response(response, url).tap do |hash|
+      JSON.parse(check_response(response, url)).tap do |hash|
         pp hash if ENV["SEMAPH_DEBUG"]
       end
     end
@@ -59,7 +71,7 @@ module Semaph
     def post(path, params = {})
       url = "#{@base}/#{path}"
       response = Faraday.post(url, params.to_json, headers)
-      check_response(response, url).tap do |hash|
+      JSON.parse(check_response(response, url)).tap do |hash|
         pp hash if ENV["SEMAPH_DEBUG"]
       end
     end
@@ -73,7 +85,7 @@ module Semaph
     end
 
     def check_response(response, url)
-      return JSON.parse(response.body) if response.status == 200
+      return response.body if response.status == 200
 
       puts "http response #{response.status} received for #{url}:\n#{response.body}"
       exit 1

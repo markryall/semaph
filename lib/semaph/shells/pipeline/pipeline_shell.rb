@@ -1,6 +1,7 @@
 require "semaph/commands/reload_command"
 require "semaph/commands/rerun_workflow_command"
 require "semaph/shells/pipeline/jobs_list_command"
+require "semaph/shells/pipeline/jobs_logs_command"
 require "semaph/shells/pipeline/jobs_poll_command"
 require "shell_shock/context"
 
@@ -37,6 +38,7 @@ module Semaph
           @jobs_list_command = JobsListCommand.new(job_collection)
           add_command @jobs_list_command, "list-jobs"
           add_command JobsPollCommand.new(job_collection), "poll-jobs"
+          add_command JobsLogsCommand.new(job_collection), "jobs-logs"
           add_command ::Semaph::Commands::RerunWorkflowCommand.new(workflow), "rerun"
           add_open_branch_command
           add_open_workflow_command

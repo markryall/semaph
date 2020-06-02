@@ -19,6 +19,10 @@ module Semaph
         @all.reject { |job| job.block_state == "done" }
       end
 
+      def failed
+        @all.select { |job| job.result == "FAILED" }
+      end
+
       private
 
       def build_jobs(content)

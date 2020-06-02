@@ -20,6 +20,10 @@ module Semaph
         assign_from_block(raw_block)
       end
 
+      def log
+        pipeline.workflow.project.client.job_log(id)
+      end
+
       def description
         [
           block_icon,
