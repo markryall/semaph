@@ -33,6 +33,14 @@ module Semaph
         ].compact.join(" ")
       end
 
+      def finished?
+        @status == "FINISHED"
+      end
+
+      def failed?
+        @result == "FAILED"
+      end
+
       # block_state can be waiting/running/done
       # block_result can be passed/failed/canceled/stopped
       def block_icon

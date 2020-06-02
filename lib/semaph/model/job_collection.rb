@@ -3,7 +3,7 @@ require "semaph/model/job"
 module Semaph
   module Model
     class JobCollection
-      attr_reader :all
+      attr_reader :all, :pipeline
 
       def initialize(pipeline)
         @pipeline = pipeline
@@ -16,11 +16,11 @@ module Semaph
       end
 
       def incomplete
-        @all.reject { |job| job.status == "FINISHED" }
+        @all.reject(&:finished?)
       end
 
       def failed
-        @all.select { |job| job.result == "FAILED" }
+        @all.select(&:failed?)
       end
 
       private
