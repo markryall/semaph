@@ -7,23 +7,29 @@ module Semaph
         def initialize(job_collection)
           @job_collection = job_collection
           @help = "poll jobs"
+          @can_notify = !`which terminal-notifier`.chomp.empty?
         end
 
         def execute(_whatever)
-          while (incomplete_jobs = @job_collection.incomplete).count.positive?
+          incomplete_jobs = @job_collection.incomplete
+          while incomplete_jobs.count.positive?
             puts "#{incomplete_jobs.count} incomplete jobs remaining:"
-            describe_jobs(incomplete_jobs)
+            incomplete_jobs.each { |job| puts job.description }
+            failed_jobs = @job_collection.failed
+            if failed_jobs.count.positive?
+              puts "Some jobs have already failed:"
+              failed_jobs.each { |job| puts job.description }
+              `terminal-notifier -group semaph -message "#{failed_jobs.count} jobs have failed" -title "Job failures"` if @can_notify
+              return
+            end
             sleep 20
             @job_collection.reload
+            incomplete_jobs = @job_collection.incomplete
           end
-          puts "All jobs have completed:"
-          describe_jobs(@job_collection.all)
-        end
-
-        private
-
-        def describe_jobs(collection)
-          collection.each { |job| puts job.description }
+          @job_collection.all.each_with_index do |job, index|
+            puts "#{index + 1} #{job.description}"
+          end
+          `terminal-notifier -group semaph -message "All jobs have completed" -title "Workflow completed"` if @can_notify
         end
       end
     end

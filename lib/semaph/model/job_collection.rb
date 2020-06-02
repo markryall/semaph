@@ -16,7 +16,11 @@ module Semaph
       end
 
       def incomplete
-        @all.reject { |job| job.block_state == "done" }
+        @all.reject { |job| job.status == "FINISHED" }
+      end
+
+      def failed
+        @all.select { |job| job.result == "FAILED" }
       end
 
       private
