@@ -2,7 +2,7 @@ module Semaph
   module Shells
     module Project
       class WorkflowsListCommand
-        TIME_FORMAT = "%Y-%m-%d %H:%M:%S".freeze
+        TIME_FORMAT = "%m-%d %H:%M".freeze
 
         attr_reader :usage, :help
 
@@ -27,10 +27,9 @@ module Semaph
           [
             index + 1,
             workflow.created_at.strftime(TIME_FORMAT),
-            "SHA",
-            workflow.sha,
             "on branch",
-            workflow.branch,
+            "#{workflow.branch}:",
+            workflow.commit,
           ].join(" ")
         end
       end
