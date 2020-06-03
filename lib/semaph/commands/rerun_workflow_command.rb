@@ -1,5 +1,3 @@
-require "semaph/shells/workflow/workflow_shell"
-
 module Semaph
   module Commands
     class RerunWorkflowCommand

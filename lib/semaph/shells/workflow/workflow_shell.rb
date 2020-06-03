@@ -1,7 +1,4 @@
-require "semaph/commands/reload_command"
-require "semaph/commands/rerun_workflow_command"
-require "semaph/commands/stop_workflow_command"
-require "semaph/commands/visit_url_command"
+require "semaph/commands"
 require "semaph/shells/workflow/pipelines_list_command"
 require "semaph/shells/workflow/pipelines_select_command"
 require "shell_shock/context"
@@ -16,6 +13,7 @@ module Semaph
 
         def initialize(workflow)
           @workflow = workflow
+          project = @workflow.project
           @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} > "
           add_commands
           @list_command.execute("")
@@ -23,71 +21,13 @@ module Semaph
 
         private
 
-        def project
-          @workflow.project
-        end
-
-        def pipeline_collection
-          @workflow.pipeline_collection
-        end
-
         def add_commands
+          pipeline_collection = @workflow.pipeline_collection
           @list_command = PipelinesListCommand.new(pipeline_collection)
           add_command @list_command, "list-pipelines", "ls"
           add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline", "cd"
-          add_command ::Semaph::Commands::RerunWorkflowCommand.new(workflow), "rerun"
-          add_command ::Semaph::Commands::StopWorkflowCommand.new(workflow), "stop"
-          add_open_branch_command
-          add_open_workflow_command
-          add_github_commands
           add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
-        end
-
-        def add_open_workflow_command
-          add_command(
-            ::Semaph::Commands::VisitUrlCommand.new(
-              "https://#{project.client.host}/workflows/#{workflow.id}",
-              "browse to workflow",
-            ),
-            "open-workflow",
-          )
-        end
-
-        def add_open_branch_command
-          add_command(
-            ::Semaph::Commands::VisitUrlCommand.new(
-              "https://#{project.client.host}/branches/#{workflow.branch_id}",
-              "browse to branch in semaphore",
-            ),
-            "open-branch",
-          )
-        end
-
-        def add_github_commands
-          return unless workflow.project.github_url
-
-          add_github_branch
-          add_github_commit
-        end
-
-        def add_github_branch
-          add_command(
-            ::Semaph::Commands::VisitUrlCommand.new(
-              "#{workflow.project.github_url}/tree/#{workflow.branch}",
-              "browse to the branch in github",
-            ),
-            "open-github-branch",
-          )
-        end
-
-        def add_github_commit
-          add_command(
-            ::Semaph::Commands::VisitUrlCommand.new(
-              "#{workflow.project.github_url}/commit/#{workflow.sha}",
-              "browse to the commit in github",
-            ),
-            "open-github-commit",
-          )
+          ::Semaph::Commands.workflow_commands(self, workflow)
         end
       end
     end
