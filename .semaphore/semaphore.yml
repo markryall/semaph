@@ -16,4 +16,8 @@ blocks:
       - name: Build
         commands:
           - checkout
-          - echo "done"
+          - sem-version ruby $(grep ruby .tool-versions | cut -d ' ' -f 2)
+          - cache restore $(git ls-tree HEAD Gemfile.lock | cut -f3 -d$' ' | cut -f1 -d$'\t')
+          - bundle install --deployment --path vendor/bundle
+          - cache store $(git ls-tree HEAD Gemfile.lock | cut -f3 -d$' ' | cut -f1 -d$'\t') vendor/bundle
+          - bundle exec rubocop
