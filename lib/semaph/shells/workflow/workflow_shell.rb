@@ -33,8 +33,8 @@ module Semaph
 
         def add_commands
           @list_command = PipelinesListCommand.new(pipeline_collection)
-          add_command @list_command, "list-pipelines"
-          add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline"
+          add_command @list_command, "list-pipelines", "ls"
+          add_command PipelinesSelectCommand.new(pipeline_collection), "select-pipeline", "cd"
           add_command ::Semaph::Commands::RerunWorkflowCommand.new(workflow), "rerun"
           add_command ::Semaph::Commands::StopWorkflowCommand.new(workflow), "stop"
           add_open_branch_command

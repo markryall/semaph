@@ -37,10 +37,11 @@ module Semaph
 
         def add_commands
           @jobs_list_command = JobsListCommand.new(job_collection)
-          add_command @jobs_list_command, "list-jobs"
+          add_command @jobs_list_command, "list-jobs", "ls"
           add_command JobsPollCommand.new(job_collection), "poll-jobs"
           add_command JobLogCommand.new(job_collection), "job-log"
-          add_command JobLogGrepCommand.new(job_collection), "grep-logs"
+          add_command JobLogGrepCommand.new(job_collection, :all), "grep-all-logs"
+          add_command JobLogGrepCommand.new(job_collection, :failed), "grep-failed-logs"
           add_command ::Semaph::Commands::RerunWorkflowCommand.new(workflow), "rerun"
           add_open_branch_command
           add_open_workflow_command

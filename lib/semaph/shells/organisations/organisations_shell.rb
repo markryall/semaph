@@ -13,8 +13,8 @@ module Semaph
           @organisations = organisations
           @prompt = "🏗  > "
           organisations_list_command = OrganisationsListCommand.new(organisations)
-          add_command organisations_list_command, "list-organisations"
-          add_command OrganisationsSelectCommand.new(organisations), "select-organisation"
+          add_command organisations_list_command, "list-organisations", "ls"
+          add_command OrganisationsSelectCommand.new(organisations), "select-organisation", "cd"
           add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
           organisations_list_command.execute("")
         end

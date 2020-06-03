@@ -6,16 +6,17 @@ module Semaph
       class JobLogGrepCommand
         attr_reader :usage, :help, :job_collection
 
-        def initialize(job_collection)
+        def initialize(job_collection, scope)
           @job_collection = job_collection
+          @scope = scope
           @usage = "<expression>"
-          @help = "retrieve all logs and grep for text"
+          @help = "retrieve logs for #{scope} jobs and grep for text"
         end
 
         def execute(expression)
           base = "tmp/logs/pipeline/#{job_collection.pipeline.id}"
           FileUtils.mkdir_p(base)
-          @job_collection.all.each do |job|
+          @job_collection.send(@scope).each do |job|
             unless job.finished?
               puts "skipping incomplete job #{job.id}"
               next

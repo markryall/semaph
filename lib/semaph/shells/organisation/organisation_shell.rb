@@ -23,8 +23,8 @@ module Semaph
         def add_commands
           project_collection = ::Semaph::Model::ProjectCollection.new(@client)
           @project_list_command = ProjectsListCommand.new(project_collection)
-          add_command @project_list_command, "list-projects"
-          add_command ProjectsSelectCommand.new(project_collection), "select-project"
+          add_command @project_list_command, "list-projects", "ls"
+          add_command ProjectsSelectCommand.new(project_collection), "select-project", "cd"
           add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
       end

@@ -29,8 +29,8 @@ module Semaph
           add_github_command
           add_open_project_command
           @workflows_list_command = WorkflowsListCommand.new(workflow_collection)
-          add_command @workflows_list_command, "list-workflows"
-          add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow"
+          add_command @workflows_list_command, "list-workflows", "ls"
+          add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow", "cd"
           add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
         end
 
