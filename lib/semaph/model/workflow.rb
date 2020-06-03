@@ -9,11 +9,15 @@ module Semaph
         @project = project
         @raw = raw
         @id = raw["wf_id"]
-        @sha = raw["commit_sha"]
-        @commit = @sha.slice(0..10)
         @created_at = Time.at(raw["created_at"]["seconds"].to_i)
         @branch = raw["branch_name"]
         @branch_id = raw["branch_id"]
+        extract_git_details
+      end
+
+      def extract_git_details
+        @sha = raw["commit_sha"]
+        @commit = @sha.slice(0..10)
         @commit = `git log -n 1 --format="%h %an %s" #{sha}`.chomp if `git cat-file -t #{sha} 2>&1`.chomp == "commit"
       end
 

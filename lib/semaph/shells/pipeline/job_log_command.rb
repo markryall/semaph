@@ -13,6 +13,20 @@ module Semaph
         end
 
         def execute(index_string)
+          base = "tmp/logs/pipeline/#{@job_collection.pipeline.id}"
+          with_job(index_string) do |job|
+            unless job.finished?
+              puts "This job has not finished yet"
+              return
+            end
+
+            system("less #{job.write_log(base)}")
+          end
+        end
+
+        private
+
+        def with_job(index_string)
           index = index_string.to_i - 1
 
           job = @job_collection.all[index]
@@ -22,19 +36,7 @@ module Semaph
             return
           end
 
-          unless job.finished?
-            puts "This job has not finished yet"
-            return
-          end
-
-          base = "tmp/logs/pipeline/#{job.pipeline.id}"
-          FileUtils.mkdir_p(base)
-          filename = "#{base}/#{job.id}.log"
-          unless File.exist?(filename)
-            puts "retrieving log for job #{job.id}"
-            File.open(filename, "w") { |file| file.puts job.log }
-          end
-          system("less #{filename}")
+          yield job
         end
       end
     end

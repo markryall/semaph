@@ -1,3 +1,5 @@
+require "fileutils"
+
 module Semaph
   module Model
     class Job
@@ -20,8 +22,16 @@ module Semaph
         assign_from_block(raw_block)
       end
 
-      def log
-        pipeline.workflow.project.client.job_log(id)
+      def write_log(base)
+        FileUtils.mkdir_p(base)
+        filename = "#{base}/#{id}.log"
+        return if File.exist?(filename)
+
+        puts "retrieving log for job #{id}"
+        File.open(filename, "w") do |file|
+          file.puts pipeline.workflow.project.client.job_log(id)
+        end
+        filename
       end
 
       def description

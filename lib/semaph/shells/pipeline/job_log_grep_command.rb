@@ -1,5 +1,3 @@
-require "fileutils"
-
 module Semaph
   module Shells
     module Pipeline
@@ -15,17 +13,12 @@ module Semaph
 
         def execute(expression)
           base = "tmp/logs/pipeline/#{job_collection.pipeline.id}"
-          FileUtils.mkdir_p(base)
           @job_collection.send(@scope).each do |job|
             unless job.finished?
               puts "skipping incomplete job #{job.id}"
               next
             end
-            filename = "#{base}/#{job.id}.log"
-            unless File.exist?(filename)
-              puts "retrieving log for job #{job.id}"
-              File.open(filename, "w") { |file| file.puts job.log }
-            end
+            job.write_log(base)
           end
           system("ag #{expression} #{base} | less")
         end
