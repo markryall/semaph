@@ -1,9 +1,9 @@
+require "semaph/formatting"
+
 module Semaph
   module Shells
     module Project
       class WorkflowsListCommand
-        TIME_FORMAT = "%m-%d %H:%M".freeze
-
         attr_reader :usage, :help
 
         def initialize(workflow_collection)
@@ -26,9 +26,8 @@ module Semaph
         def description(index, workflow)
           [
             index + 1,
-            workflow.created_at.strftime(TIME_FORMAT),
-            "on branch",
-            "#{workflow.branch}:",
+            Semaph::Formatting.time(workflow.created_at),
+            workflow.branch,
             workflow.commit,
           ].join(" ")
         end

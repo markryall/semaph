@@ -1,6 +1,6 @@
 module Semaph
   module Formatting
-    TIME_FORMAT = "%Y-%m-%d %H:%M:%S".freeze
+    TIME_FORMAT = "%m-%d %H:%M".freeze
 
     def self.time(time)
       time.strftime(TIME_FORMAT)
