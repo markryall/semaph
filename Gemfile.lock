@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    semaph (0.5.0)
+    semaph (0.6.0)
       faraday
       rainbow
       shell_shock
