@@ -1,3 +1,3 @@
 module Semaph
-  VERSION = "0.4.0".freeze
+  VERSION = "0.5.0".freeze
 end
