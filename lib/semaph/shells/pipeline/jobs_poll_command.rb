@@ -19,7 +19,9 @@ module Semaph
             if failed_jobs.count.positive?
               puts "Some jobs have already failed:"
               failed_jobs.each { |job| puts job.description }
-              `terminal-notifier -group semaph -message "#{failed_jobs.count} jobs have failed" -title "Job failures"` if @can_notify
+              if @can_notify
+                `terminal-notifier -group semaph -message "#{failed_jobs.count} jobs have failed" -title "Job failures"`
+              end
               return
             end
             sleep 20
@@ -29,7 +31,9 @@ module Semaph
           @job_collection.all.each_with_index do |job, index|
             puts "#{index + 1} #{job.description}"
           end
-          `terminal-notifier -group semaph -message "All jobs have completed" -title "Workflow completed"` if @can_notify
+          if @can_notify
+            `terminal-notifier -group semaph -message "All jobs have completed" -title "Workflow completed"`
+          end
         end
       end
     end
