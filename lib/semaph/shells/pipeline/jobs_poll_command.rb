@@ -12,7 +12,7 @@ module Semaph
 
         def execute(_whatever)
           while @job_collection.incomplete.count.positive?
-            report_incomplete(@job_collection.incomplete_jobs)
+            report_incomplete(@job_collection.incomplete)
             if @job_collection.failed.count.positive?
               report_failures(@job_collection.failed)
               return
