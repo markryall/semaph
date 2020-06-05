@@ -2,7 +2,7 @@ module Semaph
   module Shells
     module Pipeline
       class JobsPollCommand
-        attr_reader :usage, :help
+        attr_reader :usage, :help, :job_collection
 
         def initialize(job_collection)
           @job_collection = job_collection
@@ -11,14 +11,14 @@ module Semaph
         end
 
         def execute(_whatever)
-          while @job_collection.incomplete.count.positive?
-            report_incomplete(@job_collection.incomplete)
-            if @job_collection.failed.count.positive?
-              report_failures(@job_collection.failed)
+          while job_collection.incomplete.count.positive?
+            report_incomplete(job_collection.incomplete)
+            if job_collection.failed.count.positive?
+              report_failures(job_collection.failed)
               return
             end
             sleep 20
-            @job_collection.reload
+            job_collection.reload
           end
           report_final
         end
@@ -26,27 +26,35 @@ module Semaph
         private
 
         def report_final
-          @job_collection.all.each_with_index do |job, index|
+          job_collection.all.each_with_index do |job, index|
             puts "#{index + 1} #{job.description}"
           end
-          notify("Workflow completed", "All jobs have completed")
+          failed_job_count = job_collection.failed.count
+          notify(
+            "Workflow completed",
+            "#{job_collection.pipeline.workflow.description} completed with #{failed_job_count} failed jobs",
+            failed_job_count.positive?,
+          )
         end
 
         def report_incomplete(incomplete_jobs)
+          puts "polling #{job_collection.pipeline.workflow.description}"
           puts "#{incomplete_jobs.count} incomplete jobs remaining:"
           incomplete_jobs.each { |job| puts job.description }
         end
 
         def report_failures(failed_jobs)
-          puts "Some jobs have already failed:"
+          puts "Some jobs have failed:"
           failed_jobs.each { |job| puts job.description }
-          notify("Job Failures", "#{failed_jobs.count} jobs have failed")
+          notify("Job Failures", "#{failed_jobs.count} jobs have failed", true)
         end
 
-        def notify(title, message)
+        def notify(title, message, failed)
           return unless @can_notify
 
-          `terminal-notifier -group semaph -message "#{message}" -title "#{title}"`
+          sound = failed ? "basso" : "blow"
+
+          `terminal-notifier -group semaph -message "#{message}" -title "#{title}" -sound #{sound}`
         end
       end
     end

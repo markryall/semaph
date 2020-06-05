@@ -1,5 +1,3 @@
-require "semaph/formatting"
-
 module Semaph
   module Shells
     module Project
@@ -17,19 +15,8 @@ module Semaph
           @workflow_collection.all.each_with_index do |workflow, index|
             next unless workflow.branch.include?(branch)
 
-            puts description(index, workflow)
+            puts "#{index + 1} #{workflow.description}"
           end
-        end
-
-        private
-
-        def description(index, workflow)
-          [
-            index + 1,
-            Semaph::Formatting.time(workflow.created_at),
-            workflow.branch,
-            workflow.commit,
-          ].join(" ")
         end
       end
     end

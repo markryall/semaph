@@ -1,3 +1,4 @@
+require "semaph/formatting"
 require "semaph/model/pipeline_collection"
 
 module Semaph
@@ -29,6 +30,14 @@ module Semaph
         rerun_response = project.client.rerun_workflow(@id)
         workflow_response = project.client.workflow(rerun_response["wf_id"])
         Workflow.new(project, workflow_response["workflow"])
+      end
+
+      def description
+        [
+          Semaph::Formatting.time(created_at),
+          branch,
+          commit,
+        ].join(" ")
       end
 
       def stop
