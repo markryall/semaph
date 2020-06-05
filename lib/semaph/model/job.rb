@@ -25,12 +25,13 @@ module Semaph
       def write_log(base)
         FileUtils.mkdir_p(base)
         filename = "#{base}/#{id}.log"
-        return if File.exist?(filename)
+        return filename if File.exist?(filename)
 
         puts "retrieving log for job #{id}"
         File.open(filename, "w") do |file|
           file.puts pipeline.workflow.project.client.job_log(id)
         end
+
         filename
       end
 
