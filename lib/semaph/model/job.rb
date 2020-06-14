@@ -26,6 +26,10 @@ module Semaph
         pipeline.workflow.project.client.stop_job(id)
       end
 
+      def show
+        pp pipeline.workflow.project.client.job(id)
+      end
+
       def write_log(base)
         FileUtils.mkdir_p(base)
         filename = "#{base}/#{id}.log"

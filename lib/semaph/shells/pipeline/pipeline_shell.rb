@@ -1,6 +1,8 @@
 require "semaph/commands"
+require "semaph/shells/pipeline/job_debug_command"
 require "semaph/shells/pipeline/job_log_command"
 require "semaph/shells/pipeline/job_log_grep_command"
+require "semaph/shells/pipeline/job_show_command"
 require "semaph/shells/pipeline/job_stop_command"
 require "semaph/shells/pipeline/jobs_list_command"
 require "semaph/shells/pipeline/jobs_poll_command"
@@ -39,9 +41,11 @@ module Semaph
         def add_job_collection_commands(job_collection)
           @jobs_list_command = JobsListCommand.new(job_collection)
           add_command @jobs_list_command, "list-jobs", "ls"
-          add_command JobsPollCommand.new(job_collection), "poll-jobs"
-          add_command JobLogCommand.new(job_collection), "job-log"
-          add_command JobStopCommand.new(job_collection), "job-stop"
+          add_command JobsPollCommand.new(job_collection), "poll"
+          add_command JobLogCommand.new(job_collection), "log"
+          add_command JobDebugCommand.new(job_collection), "debug"
+          add_command JobShowCommand.new(job_collection), "show"
+          add_command JobStopCommand.new(job_collection), "stop"
           add_command JobLogGrepCommand.new(job_collection, :all), "grep-all-logs"
           add_command JobLogGrepCommand.new(job_collection, :failed), "grep-failed-logs"
         end
