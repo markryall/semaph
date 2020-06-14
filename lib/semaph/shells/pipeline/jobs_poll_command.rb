@@ -13,20 +13,18 @@ module Semaph
           @can_notify = !`which terminal-notifier`.chomp.empty?
         end
 
-        def execute(_whatever)
-          while job_collection.incomplete.count.positive?
-            report_incomplete(job_collection.incomplete)
-            if job_collection.failed.count.positive?
-              report_failures(job_collection.failed)
-              return
-            end
-            sleep 20
-            job_collection.reload
-          end
+        def execute(_whatever = nil)
+          report_and reload(15) while job_collection.incomplete.count.positive? && job_collection.failed.count.zero?
           report_final
         end
 
         private
+
+        def report_and_reload(period)
+          report_incomplete(job_collection.incomplete)
+          sleep period
+          job_collection.reload
+        end
 
         def report_final
           @list_command.execute
@@ -42,12 +40,6 @@ module Semaph
           puts "polling #{job_collection.pipeline.workflow.description}"
           puts "#{incomplete_jobs.count} incomplete jobs remaining:"
           incomplete_jobs.each { |job| puts job.description }
-        end
-
-        def report_failures(failed_jobs)
-          puts "Some jobs have failed:"
-          failed_jobs.each { |job| puts job.description }
-          notify("Job Failures", "#{failed_jobs.count} jobs have failed", true)
         end
 
         def notify(title, message, failed)
