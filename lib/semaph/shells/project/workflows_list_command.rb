@@ -1,4 +1,4 @@
-require 'rainbow'
+require "semaph/formatting"
 
 module Semaph
   module Shells
@@ -17,12 +17,8 @@ module Semaph
           @workflow_collection.all.each_with_index do |workflow, index|
             next unless workflow.branch.include?(branch)
 
-            puts [display_index(index + 1), workflow.description].join(" ")
+            puts [::Semaph::Formatting.index(index + 1), workflow.description].join(" ")
           end
-        end
-
-        def display_index(index)
-          Rainbow(index.to_s.rjust(2)).yellow
         end
       end
     end

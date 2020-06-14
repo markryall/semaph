@@ -1,11 +1,14 @@
+require "semaph/formatting"
+
 module Semaph
   module Shells
     module Pipeline
       class JobsPollCommand
         attr_reader :usage, :help, :job_collection
 
-        def initialize(job_collection)
+        def initialize(job_collection, list_command)
           @job_collection = job_collection
+          @list_command = list_command
           @help = "poll jobs"
           @can_notify = !`which terminal-notifier`.chomp.empty?
         end
@@ -26,9 +29,7 @@ module Semaph
         private
 
         def report_final
-          job_collection.all.each_with_index do |job, index|
-            puts "#{index + 1} #{job.description}"
-          end
+          @list_command.execute
           failed_job_count = job_collection.failed.count
           notify(
             "Workflow completed",

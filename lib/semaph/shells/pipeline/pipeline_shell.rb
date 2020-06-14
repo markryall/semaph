@@ -24,7 +24,7 @@ module Semaph
           project = workflow.project
           @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} #{pipeline.yaml} > "
           add_commands
-          @jobs_list_command.execute("")
+          @jobs_list_command.execute
         end
 
         private
@@ -41,7 +41,7 @@ module Semaph
         def add_job_collection_commands(job_collection)
           @jobs_list_command = JobsListCommand.new(job_collection)
           add_command @jobs_list_command, "list-jobs", "ls"
-          add_command JobsPollCommand.new(job_collection), "poll"
+          add_command JobsPollCommand.new(job_collection, @jobs_list_command), "poll"
           add_command JobLogCommand.new(job_collection), "log"
           add_command JobDebugCommand.new(job_collection), "debug"
           add_command JobShowCommand.new(job_collection), "show"
