@@ -23,31 +23,36 @@ module Semaph
           workflow = pipeline.workflow
           project = workflow.project
           @prompt = "🏗  #{project.client.name} #{project.name} #{workflow.id} #{pipeline.yaml} > "
+          add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
           add_commands
-          @jobs_list_command.execute
+          jobs_list_command.execute
         end
 
         private
 
         def add_commands
-          add_command ::Semaph::Commands::ReloadCommand.new, "reload" if ENV["SEMAPH_RELOAD"]
-          workflow = pipeline.workflow
-          ::Semaph::Commands.workflow_commands(self, workflow)
+          ::Semaph::Commands.workflow_commands(self, pipeline.workflow)
           add_job_collection_commands(pipeline.job_collection)
           add_command PromoteCommand.new(pipeline), "promote"
           add_command PromotionsListCommand.new(pipeline.promotion_collection), "list-promotions"
         end
 
         def add_job_collection_commands(job_collection)
-          @jobs_list_command = JobsListCommand.new(job_collection)
-          add_command @jobs_list_command, "list-jobs", "ls"
-          add_command JobsPollCommand.new(job_collection, @jobs_list_command), "poll"
+          add_command JobsPollCommand.new(job_collection, jobs_list_command), "poll"
           add_command JobLogCommand.new(job_collection), "log"
           add_command JobDebugCommand.new(job_collection), "debug"
           add_command JobShowCommand.new(job_collection), "show"
           add_command JobStopCommand.new(job_collection), "stop"
           add_command JobLogGrepCommand.new(job_collection, :all), "grep-all-logs"
           add_command JobLogGrepCommand.new(job_collection, :failed), "grep-failed-logs"
+        end
+
+        def jobs_list_command
+          return @jobs_list_command if @jobs_list_command
+
+          @jobs_list_command = JobsListCommand.new(pipeline.job_collection)
+          add_command @jobs_list_command, "list-jobs", "ls"
+          @jobs_list_command
         end
       end
     end
