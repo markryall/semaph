@@ -18,6 +18,10 @@ module Semaph
         end
       end
 
+      def promote(name)
+        workflow.project.client.promote(id, name)
+      end
+
       def job_collection
         @job_collection ||= JobCollection.new(self)
       end
