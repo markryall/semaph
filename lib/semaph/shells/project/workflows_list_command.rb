@@ -1,3 +1,5 @@
+require 'rainbow'
+
 module Semaph
   module Shells
     module Project
@@ -15,8 +17,12 @@ module Semaph
           @workflow_collection.all.each_with_index do |workflow, index|
             next unless workflow.branch.include?(branch)
 
-            puts "#{index + 1} #{workflow.description}"
+            puts [display_index(index + 1), workflow.description].join(" ")
           end
+        end
+
+        def display_index(index)
+          Rainbow(index.to_s.rjust(2)).yellow
         end
       end
     end

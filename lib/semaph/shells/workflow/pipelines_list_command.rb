@@ -1,3 +1,5 @@
+require 'rainbow'
+
 module Semaph
   module Shells
     module Workflow
@@ -12,8 +14,12 @@ module Semaph
         def execute(_whatever)
           @pipeline_collection.reload
           @pipeline_collection.all.each_with_index do |pipeline, index|
-            puts "#{index + 1} #{pipeline.description}"
+            puts [display_index(index + 1), pipeline.description].join(' ')
           end
+        end
+
+        def display_index(index)
+          Rainbow(index.to_s.rjust(2)).yellow
         end
       end
     end
