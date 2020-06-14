@@ -31,11 +31,19 @@ module Semaph
       end
 
       def description
-        "#{icon} #{yaml}"
+        [
+          icon,
+          time,
+          yaml,
+        ].compact.join(" ")
+      end
+
+      def done?
+        @state == "DONE"
       end
 
       def icon
-        return "🔵" unless @state == "DONE"
+        return "🔵" unless done?
 
         return "⛔" if @result == "STOPPED"
 
@@ -45,6 +53,20 @@ module Semaph
       end
 
       private
+
+      def time
+        return hours_minutes_seconds(@done_at.to_i - @created_at.to_i) if done?
+
+        hours_minutes_seconds(Time.now.to_i - @created_at.to_i)
+      end
+
+      def hours_minutes_seconds(total_seconds)
+        seconds = total_seconds % 60
+        minutes = (total_seconds / 60) % 60
+        hours = total_seconds / (60 * 60)
+
+        format("%02<hours>d:%02<minutes>d:%02<seconds>d", hours: hours, minutes: minutes, seconds: seconds)
+      end
 
       def extract_time(name)
         key = "#{name}_at"
