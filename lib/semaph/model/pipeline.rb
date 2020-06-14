@@ -1,16 +1,18 @@
+require "semaph/formatting"
 require "semaph/model/job_collection"
 require "semaph/model/promotion_collection"
 
 module Semaph
   module Model
     class Pipeline
-      attr_reader :workflow, :raw, :id, :yaml, :state, :result
+      attr_reader :workflow, :raw, :id, :name, :yaml, :state, :result
 
       def initialize(workflow, raw)
         @workflow = workflow
         @raw = raw
         @id = raw["ppl_id"]
         @yaml = raw["yaml_file_name"]
+        @name = raw["name"]
         @state = raw["state"]
         @result = raw["result"]
         %w[created done pending queuing running stopping].each do |name|
@@ -34,7 +36,8 @@ module Semaph
         [
           icon,
           time,
-          yaml,
+          name,
+          "(#{yaml})",
         ].compact.join(" ")
       end
 
@@ -55,17 +58,9 @@ module Semaph
       private
 
       def time
-        return hours_minutes_seconds(@done_at.to_i - @created_at.to_i) if done?
+        return ::Semaph::Formatting.hours_minutes_seconds(@done_at.to_i - @created_at.to_i) if done?
 
-        hours_minutes_seconds(Time.now.to_i - @created_at.to_i)
-      end
-
-      def hours_minutes_seconds(total_seconds)
-        seconds = total_seconds % 60
-        minutes = (total_seconds / 60) % 60
-        hours = total_seconds / (60 * 60)
-
-        format("%02<hours>d:%02<minutes>d:%02<seconds>d", hours: hours, minutes: minutes, seconds: seconds)
+        ::Semaph::Formatting.hours_minutes_seconds(Time.now.to_i - @created_at.to_i)
       end
 
       def extract_time(name)
