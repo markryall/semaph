@@ -42,8 +42,16 @@ module Semaph
       get "pipelines/#{id}", { detailed: true }
     end
 
+    def promotions(pipeline_id)
+      get "promotions", { pipeline_id: pipeline_id }
+    end
+
     def job(id)
       get "jobs/#{id}"
+    end
+
+    def stop_job(id)
+      post "jobs/#{id}/stop"
     end
 
     def job_log(id)

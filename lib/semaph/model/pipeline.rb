@@ -1,4 +1,5 @@
 require "semaph/model/job_collection"
+require "semaph/model/promotion_collection"
 
 module Semaph
   module Model
@@ -19,6 +20,10 @@ module Semaph
 
       def job_collection
         @job_collection ||= JobCollection.new(self)
+      end
+
+      def promotion_collection
+        @promotion_collection ||= PromotionCollection.new(self)
       end
 
       def description

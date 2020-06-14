@@ -2,7 +2,9 @@ require "semaph/commands"
 require "semaph/shells/pipeline/jobs_list_command"
 require "semaph/shells/pipeline/job_log_command"
 require "semaph/shells/pipeline/job_log_grep_command"
+require "semaph/shells/pipeline/job_stop_command"
 require "semaph/shells/pipeline/jobs_poll_command"
+require "semaph/shells/pipeline/promotions_list_command"
 require "shell_shock/context"
 
 module Semaph
@@ -29,6 +31,7 @@ module Semaph
           workflow = pipeline.workflow
           ::Semaph::Commands.workflow_commands(self, workflow)
           add_job_collection_commands(pipeline.job_collection)
+          add_command PromotionsListCommand.new(pipeline.promotion_collection), "list-promotions"
         end
 
         def add_job_collection_commands(job_collection)
@@ -36,6 +39,7 @@ module Semaph
           add_command @jobs_list_command, "list-jobs", "ls"
           add_command JobsPollCommand.new(job_collection), "poll-jobs"
           add_command JobLogCommand.new(job_collection), "job-log"
+          add_command JobStopCommand.new(job_collection), "job-stop"
           add_command JobLogGrepCommand.new(job_collection, :all), "grep-all-logs"
           add_command JobLogGrepCommand.new(job_collection, :failed), "grep-failed-logs"
         end

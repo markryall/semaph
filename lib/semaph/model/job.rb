@@ -22,6 +22,10 @@ module Semaph
         assign_from_block(raw_block)
       end
 
+      def stop
+        pipeline.workflow.project.client.stop_job(id)
+      end
+
       def write_log(base)
         FileUtils.mkdir_p(base)
         filename = "#{base}/#{id}.log"
