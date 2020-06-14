@@ -14,7 +14,7 @@ module Semaph
         end
 
         def execute(_whatever = nil)
-          report_and reload(15) while job_collection.incomplete.count.positive? && job_collection.failed.count.zero?
+          report_and_reload(15) while job_collection.incomplete.count.positive? && job_collection.failed.count.zero?
           report_final
         end
 
