@@ -17,7 +17,14 @@ module Semaph
         end
 
         def execute(name)
-          ::Semaph::Shells::Organisation::OrganisationShell.new(@organisations[name]).push
+          organisation = @organisations[name]
+
+          unless organisation
+            puts "There is no organisation called #{name}"
+            return
+          end
+
+          ::Semaph::Shells::Organisation::OrganisationShell.new(organisation).push
         end
       end
     end
