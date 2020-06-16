@@ -3,7 +3,17 @@ require "json"
 
 module Semaph
   # Refer to https://docs.semaphoreci.com/reference/api-v1alpha/
-  class Api
+  class Client
+    class RequestException < RuntimeError
+      attr_reader :url, :response
+
+      def initialize(url, response)
+        @url = url
+        @response = response
+        super("http response #{response.status} received for #{url}:\n#{response.body}")
+      end
+    end
+
     attr_reader :host, :name
 
     def initialize(token, host)
@@ -99,8 +109,7 @@ module Semaph
     def check_response(response, url)
       return response.body if response.status == 200
 
-      puts "http response #{response.status} received for #{url}:\n#{response.body}"
-      exit 1
+      raise RequestException.new(url, response)
     end
   end
 end

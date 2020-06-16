@@ -1,4 +1,4 @@
-require "semaph/api"
+require "semaph/client"
 require "semaph/commands/reload_command"
 require "semaph/model/project_collection"
 require "semaph/shells/organisation/projects_list_command"
@@ -12,7 +12,7 @@ module Semaph
         include ShellShock::Context
 
         def initialize(organisation)
-          @client = ::Semaph::Api.new(organisation["auth"]["token"], organisation["host"])
+          @client = ::Semaph::Client.new(organisation["auth"]["token"], organisation["host"])
           @prompt = "🏗  #{@client.name} > "
           add_commands
           @project_list_command.execute("")
