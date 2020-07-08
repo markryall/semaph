@@ -4,7 +4,7 @@ module Semaph
   module Shells
     module Pipeline
       class JobLogCommand
-        attr_reader :usage, :help
+        attr_reader :usage, :help, :job_collection
 
         def initialize(job_collection)
           @job_collection = job_collection
@@ -13,14 +13,14 @@ module Semaph
         end
 
         def execute(index_string)
-          base = "tmp/logs/pipeline/#{@job_collection.pipeline.id}"
-          with_job(index_string) do |job|
-            unless job.finished?
-              puts "This job has not finished yet"
-              return
-            end
+          base = "tmp/logs/pipeline/#{job_collection.pipeline.id}"
 
-            system("less #{job.write_log(base)}")
+          with_job(index_string) do |job|
+            if job.finished?
+              system("less #{job.write_log(base)}")
+            else
+              system("open https://#{job_collection.pipeline.workflow.project.client.host}/jobs/#{job.id}")
+            end
           end
         end
 
@@ -29,7 +29,7 @@ module Semaph
         def with_job(index_string)
           index = index_string.to_i - 1
 
-          job = @job_collection.all[index]
+          job = job_collection.all[index]
 
           unless job
             puts "There is no job at position #{index}"
