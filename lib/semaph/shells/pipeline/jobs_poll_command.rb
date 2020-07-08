@@ -21,8 +21,7 @@ module Semaph
         private
 
         def report_and_reload(period)
-          report_incomplete(job_collection.incomplete)
-          sleep period
+          period.times { report_incomplete }
           job_collection.reload
         end
 
@@ -36,10 +35,28 @@ module Semaph
           )
         end
 
-        def report_incomplete(incomplete_jobs)
-          puts "polling #{job_collection.pipeline.workflow.description}"
-          puts "#{incomplete_jobs.count} incomplete jobs remaining:"
-          incomplete_jobs.each { |job| puts job.description }
+        def report_incomplete
+          base = [nil, elapsed, report_ratio, job_collection.pipeline.workflow.description].join(" ")
+          erase base
+        end
+
+        def report_ratio
+          [
+            job_collection.incomplete.count.to_s.rjust(2, "0"),
+            job_collection.all.count.to_s.rjust(2, "0"),
+          ].join("/")
+        end
+
+        def elapsed
+          duration = Time.now.to_i - job_collection.created_at.to_i
+          mins = duration / 60
+          secs = duration % 60
+          [mins.to_s.rjust(2, "0"), secs.to_s.rjust(2, "0")].join(":")
+        end
+
+        def erase(string)
+          print string
+          print "\b" * string.length
         end
 
         def notify(title, message, failed)

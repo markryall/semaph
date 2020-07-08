@@ -13,18 +13,18 @@ module Semaph
         end
 
         def execute(index_string)
-          base = "tmp/logs/pipeline/#{job_collection.pipeline.id}"
-
-          with_job(index_string) do |job|
-            if job.finished?
-              system("less #{job.write_log(base)}")
-            else
-              system("open https://#{job_collection.pipeline.workflow.project.client.host}/jobs/#{job.id}")
-            end
-          end
+          with_job(index_string) { |job| system(command(job)) }
         end
 
         private
+
+        def command(job)
+          base = "tmp/logs/pipeline/#{job_collection.pipeline.id}"
+
+          return "less #{job.write_log(base)}" if job.finished?
+
+          "open https://#{job_collection.pipeline.workflow.project.client.host}/jobs/#{job.id}"
+        end
 
         def with_job(index_string)
           index = index_string.to_i - 1
