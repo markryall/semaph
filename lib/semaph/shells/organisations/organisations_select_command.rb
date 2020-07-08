@@ -13,11 +13,13 @@ module Semaph
         end
 
         def completion(text)
-          @organisations.keys.grep(/^#{text}/).sort
+          @organisations.map { |org| org["host"].split(".").first }.grep(/^#{text}/).sort
         end
 
         def execute(name)
-          organisation = @organisations[name]
+          organisation = @organisations.find do |org|
+            org["host"].split(".").first == name
+          end
 
           unless organisation
             puts "There is no organisation called #{name}"

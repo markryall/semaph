@@ -10,8 +10,8 @@ module Semaph
         end
 
         def execute(_whatever)
-          @organisations.each_key do |name|
-            puts "#{name} (#{@organisations[name]['host']})"
+          @organisations.each do |organisation|
+            puts organisation["host"].split(".").first
           end
         end
       end

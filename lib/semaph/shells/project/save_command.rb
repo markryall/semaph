@@ -14,8 +14,7 @@ module Semaph
         def execute(_ignored)
           config = {
             host: project.client.host,
-            project: project.name,
-            project_id: project.id,
+            project: project.raw,
           }
           File.open(".semaph", "w") do |file|
             file.puts config.to_yaml
