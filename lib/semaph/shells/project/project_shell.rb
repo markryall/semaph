@@ -1,5 +1,6 @@
 require "semaph/commands/reload_command"
 require "semaph/commands/visit_url_command"
+require "semaph/shells/project/save_command"
 require "semaph/shells/project/workflows_list_command"
 require "semaph/shells/project/workflows_select_command"
 require "shell_shock/context"
@@ -28,6 +29,7 @@ module Semaph
         def add_commands
           add_github_command
           add_open_project_command
+          add_command SaveCommand.new(project), "save"
           @workflows_list_command = WorkflowsListCommand.new(workflow_collection)
           add_command @workflows_list_command, "list-workflows", "ls"
           add_command WorkflowsSelectCommand.new(workflow_collection), "select-workflow", "cd"
