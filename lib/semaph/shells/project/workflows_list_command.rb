@@ -14,15 +14,15 @@ module Semaph
 
         def execute(branch)
           @workflow_collection.reload
-          @workflow_collection.all.slice(0..5).each_with_index do |workflow, index|
+          @workflow_collection.all.slice(0..9).each_with_index do |workflow, index|
             next unless workflow.branch.include?(branch)
 
-            workflow.pipeline_collection.reload
+            pipelines = workflow.pipeline_collection.reload
 
             puts [
               ::Semaph::Formatting.index(index + 1),
-              workflow.pipeline_collection.all.last&.icon,
-              workflow.pipeline_collection.all.count,
+              pipelines.last&.icon,
+              ::Semaph::Formatting.length(pipelines),
               workflow.description,
             ].join(" ")
           end

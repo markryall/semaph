@@ -19,5 +19,9 @@ module Semaph
     def self.index(number)
       Rainbow(number.to_s.rjust(2)).yellow
     end
+
+    def self.length(collection)
+      Rainbow(collection.length.to_s).cyan
+    end
   end
 end
