@@ -32,12 +32,12 @@ module Semaph
         Workflow.new(project, workflow_response["workflow"])
       end
 
+      def created
+        Semaph::Formatting.time(created_at)
+      end
+
       def description
-        [
-          Semaph::Formatting.time(created_at),
-          branch,
-          commit,
-        ].join(" ")
+        [created, branch, commit].join(" ")
       end
 
       def stop
