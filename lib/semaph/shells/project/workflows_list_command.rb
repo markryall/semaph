@@ -22,6 +22,7 @@ module Semaph
             puts [
               ::Semaph::Formatting.index(index + 1),
               workflow.pipeline_collection.all.last&.icon,
+              workflow.pipeline_collection.all.count,
               workflow.description,
             ].join(" ")
           end
