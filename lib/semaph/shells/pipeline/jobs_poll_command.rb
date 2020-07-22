@@ -37,7 +37,7 @@ module Semaph
         end
 
         def report_incomplete
-          base = [nil, elapsed, report_ratio, "jobs completed"].join(" ")
+          base = [nil, elapsed, report_ratio, "jobs remaining"].join(" ")
           erase base
         end
 
