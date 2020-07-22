@@ -14,6 +14,7 @@ module Semaph
         end
 
         def execute(_whatever = nil)
+          puts "Polling #{job_collection.pipeline.workflow.description}:"
           report_and_reload(15) while job_collection.incomplete.count.positive? && job_collection.failed.count.zero?
           report_final
         end
@@ -36,7 +37,7 @@ module Semaph
         end
 
         def report_incomplete
-          base = [nil, elapsed, report_ratio, job_collection.pipeline.workflow.description].join(" ")
+          base = [nil, elapsed, report_ratio, "jobs completed"].join(" ")
           erase base
         end
 
