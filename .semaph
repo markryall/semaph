@@ -1,9 +1,0 @@
----
-:host: markryall.semaphoreci.com
-:project:
-  spec:
-    repository:
-      url: git@github.com:markryall/semaph.git
-  metadata:
-    name: semaph
-    id: e75c6c57-2665-4e45-9cab-560508eb0b22
