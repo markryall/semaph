@@ -3,7 +3,7 @@ require "semaph/model/workflow_collection"
 module Semaph
   module Model
     class Project
-      GITHUB_REGGEXP = %r{git@github.com:(.*)/(.*).git}.freeze
+      GITHUB_REGGEXP = %r{git@github.com:(.*)/(.*).git}
 
       attr_reader :client, :raw, :id, :name
 

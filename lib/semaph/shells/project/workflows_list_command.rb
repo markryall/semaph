@@ -19,13 +19,19 @@ module Semaph
 
             pipelines = workflow.pipeline_collection.reload
 
-            puts [
-              ::Semaph::Formatting.index(index + 1),
-              pipelines.last&.icon,
-              ::Semaph::Formatting.length(pipelines),
-              workflow.description,
-            ].join(" ")
+            puts content(index, pipelines, workflow)
           end
+        end
+
+        private
+
+        def content(index, pipelines, workflow)
+          [
+            ::Semaph::Formatting.index(index + 1),
+            pipelines.last&.icon,
+            ::Semaph::Formatting.length(pipelines),
+            workflow.description,
+          ].join(" ")
         end
       end
     end
