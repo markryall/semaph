@@ -39,7 +39,7 @@ module Semaph
   def self.load_organisations
     yaml_path = File.join(File.expand_path("~"), ".sem.yaml")
 
-    unless File.exist?(yaml_path) && organisations
+    unless File.exist?(yaml_path)
       puts "Please install the sem tool and authenticate to semaphoreci.com"
       exit 1
     end
