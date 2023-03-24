@@ -26,7 +26,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday"
   spec.add_dependency "rainbow"
   spec.add_dependency "shell_shock"
-
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "rubocop"
 end
