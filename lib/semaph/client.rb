@@ -29,7 +29,14 @@ module Semaph
     end
 
     def workflows(project_id)
-      get "plumber-workflows", { project_id: project_id }
+      5.times do
+        begin
+          return get "plumber-workflows", { project_id: project_id }
+        rescue RuntimeError => e
+          puts "failed to retrieve workflows (#{e.message}) - trying again"
+        end
+        sleep 1
+      end
     end
 
     def workflow(workflow_id)
