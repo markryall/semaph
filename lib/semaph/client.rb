@@ -28,10 +28,12 @@ module Semaph
       get "projects"
     end
 
-    def workflows(project_id)
+    def workflows(project_id, branch_name)
+      criteria = { project_id: project_id }
+      criteria[:branch_name] = branch_name if (branch_name || "").strip != ""
       5.times do
         begin
-          return get "plumber-workflows", { project_id: project_id }
+          return get "plumber-workflows", criteria
         rescue RuntimeError => e
           puts "failed to retrieve workflows (#{e.message}) - trying again"
         end
@@ -76,7 +78,7 @@ module Semaph
     end
 
     def job_log(id)
-      get_raw "jobs/#{id}/plain_logs.json"
+      get "logs/#{id}"
     end
 
     private

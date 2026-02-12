@@ -9,8 +9,8 @@ module Semaph
         @project = project
       end
 
-      def reload
-        @all = @project.client.workflows(@project.id).map do |content|
+      def reload(branch)
+        @all = @project.client.workflows(@project.id, branch).map do |content|
           Workflow.new @project, content
         end
       end

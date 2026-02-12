@@ -36,8 +36,17 @@ module Semaph
         return filename if File.exist?(filename)
 
         puts "retrieving log for job #{id}"
+        content = pipeline.workflow.project.client.job_log(id)
+        File.open("#{base}/#{id}.json", "w") do |file|
+          file.puts hash.to_json
+        end
+
         File.open(filename, "w") do |file|
-          file.puts pipeline.workflow.project.client.job_log(id)
+          content["events"].each do |event|
+            next unless event["output"]
+
+            file.print event["output"]
+          end
         end
 
         filename

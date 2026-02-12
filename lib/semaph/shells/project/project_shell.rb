@@ -17,7 +17,6 @@ module Semaph
           @project = project
           @prompt = "🏗  #{project.client.name} #{project.name} > "
           add_commands
-          @workflows_list_command.execute("")
         end
 
         private
