@@ -20,7 +20,11 @@ module Semaph
             end
             job.write_log(base)
           end
-          system("ag #{expression} #{base} | less")
+          if `which ag`.length.positive?
+            system("ag #{expression} #{base} --nofilename --nonumber")
+          else
+            system("grep -r #{expression} #{base}")
+          end
         end
       end
     end
